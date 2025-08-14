@@ -32,7 +32,8 @@ If you want to follow SSOL's guide directly and make sure Step 1 from https://gi
 ->Save the files
 ->cmake -B build
 ->cmake --build build
-->This should give you a path to a .exe file. Double click that, and it should create out.ppm in the same location. 
+->This should give you a path to a .exe file. Double click that, and it should create out.ppm in the same location and you can view it
+
 
 
 
