@@ -5,10 +5,10 @@ To run my repo, follow these steps:
 ->Download VSCode with C++ option ticked
 ->Download GIMP https://www.gimp.org/
 ->Open the Developer Command Prompt for VS Code (you can search the start bar for this)
-->mkdir Graphics (this will hold all your files. You might have to navigate to C://Users/<yourName> before doing this.)
+->mkdir Graphics (this will hold all your files. You might have to navigate to C://Users/yourName before doing this.)
 ->cd Graphics 
-->git clone <this repo>
-->(optional)git checkout <commit you want to go to.>
+->git clone https://github.com/nidhisunil
+->(optional)git checkout commitYouWantToGoTo
 ->cd tinyraytracer
 ->cmake -B build
 ->cmake --build build
@@ -23,7 +23,7 @@ If you want to follow SSOL's guide directly and make sure Step 1 from https://gi
 ->Download VSCode with C++ option ticked
 ->Download GIMP https://www.gimp.org/
 ->Open the Developer Command Prompt for VS Code (you can search the start bar for this)
-->mkdir Graphics (this will hold all your files. You might have to navigate to C://Users/<yourName> before doing this.)
+->mkdir Graphics (this will hold all your files. You might have to navigate to C://Users/yourName before doing this.)
 ->cd Graphics 
 ->git clone https://github.com/ssloy/tinyraytracer.git  
 ->git checkout bd36c98 (this is the ID of the first commit of the tinyraytracer repo by ssol. This commit will help us with the initial setup and make sure we are able to write images to a file)
