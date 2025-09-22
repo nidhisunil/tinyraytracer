@@ -7,6 +7,12 @@
 #define M_PI   3.14159265358979323846264338327950288
 #include "geometry.h"
 
+//this stores the light sources
+struct Light{
+    Light(const Vec3f &p, const float &i) : position(p), intensity(i) {}
+    Vec3f position;
+    float intensity;
+};
 
 //this stores the color of the sphere
 struct Material{
@@ -54,16 +60,24 @@ bool scene_intersect(const Vec3f &orig, const Vec3f &dir, const std::vector<Sphe
 }
 
 //function to cast a ray and return respective bg color based on whether it intersects the sphere
-Vec3f cast_ray(const Vec3f &orig, const Vec3f &dir, const std::vector<Sphere> &spheres){
+Vec3f cast_ray(const Vec3f &orig, const Vec3f &dir, const std::vector<Sphere> &spheres, const std::vector<Light> &lights){
     Vec3f point, N;
     Material material;
      if (!scene_intersect(orig, dir, spheres, point, N, material)) {
         return Vec3f(0.2, 0.7, 0.8); // background color
     }
-    return material.diffuse_color;
+    
+
+    //in the case there is an intersection, compute the intensity of the all light sources at that point
+    float diffuse_light_intensity = 0;
+    for (size_t i=0; i<lights.size(); i++){
+        Vec3f light_dir = (lights[i].position - point).normalize();
+        diffuse_light_intensity += lights[i].intensity * std::max(0.f, light_dir*N);
+    }
+    return material.diffuse_color*diffuse_light_intensity;
 }
 
-void render(const std::vector<Sphere> &spheres) {
+void render(const std::vector<Sphere> &spheres, const std::vector<Light> &lights) {
     const int width    = 1024;
     const int height   = 768;
     const int fov = M_PI/2.;
@@ -85,7 +99,7 @@ void render(const std::vector<Sphere> &spheres) {
             float x =  (2*(i + 0.5)/(float)width  - 1)*tan(fov/2.)*width/(float)height;
             float y = -(2*(j + 0.5)/(float)height - 1)*tan(fov/2.);
             Vec3f dir = Vec3f(x, y, -1).normalize();
-            framebuffer[i+j*width] = cast_ray(Vec3f(0,0,0), dir, spheres);
+            framebuffer[i+j*width] = cast_ray(Vec3f(0,0,0), dir, spheres, lights);
 
 
         }
@@ -112,7 +126,9 @@ int main() {
     spheres.push_back(Sphere(Vec3f( 1.5, -0.5, -18), 3, red_rubber));
     spheres.push_back(Sphere(Vec3f( 7,    5,   -18), 4,      ivory));
 
-    render(spheres);
+    std::vector<Light> lights;
+    lights.push_back(Light(Vec3f(-20, 20,  20), 1.5));
+    render(spheres, lights);
 
     //In order to prevent the console from exiting after running your exe file, enter the two lines below. This portion was written to check Blurb 1 
     //printf("Press Enter to exit\n");
